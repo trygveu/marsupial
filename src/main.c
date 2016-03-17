@@ -25,10 +25,10 @@ void print_info() {
         \\_  /  _\\     \n\
           \\,\\ / \\\\  \n\
             //   \\\\   \n\
-          ,/'     `\\_, \n\
+          ,/'     `\\_, \n\n\
     We like keeping things in pouches, so they can't make such a mess. Much\n\
     like objects and private variables.\n";
-  fprintf(stderr, "\nHello, have you ever wondered what a Marsupial is?\n");
-  fprintf(stderr, "\n%s\n", marsupial_definition);
+  fprintf(stdout, "\nHello, have you ever wondered what a Marsupial is?\n");
+  fprintf(stdout, "\n%s\n", marsupial_definition);
 }
 
