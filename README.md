@@ -1,6 +1,6 @@
 # marsupial
 
-Hello, have you ever wondered what a Marsupial is?
+This is an example repository for writing object oriented code in C.
 
     Marsupials are an infraclass of mammals living primarily in Australasia 
     and the Americas. A distinctive characteristic, common to many species,
