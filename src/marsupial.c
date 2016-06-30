@@ -21,6 +21,16 @@ Marsupial* Marsupial_new() {
 
 int Marsupial_open_image(Marsupial *self, char* filename){
   //TODO: Open the file.
+  // The pgm format is the simplest format alive:
+  // https://en.wikipedia.org/wiki/Netpbm_format#PGM_example
+  //
+  //     P2
+  //     # Comment lines starts with #.
+  //     width height
+  //     max_value
+  //     8bitdata
+  // 
+  // Do cat res/logo.pgm to see it.
   return 0;
 }
 
