@@ -47,8 +47,7 @@ Marsupial *Marsupial_new() {
 /** Open a pgm image.
  *  We support standard pgm format without comments.
  *  @param self Marsupial object.
- *  @param filename Pgm filepath, read only.
- */
+ *  @param filename Pgm filepath, read only. */
 int Marsupial_open_image(Marsupial *self, char *filename) {
   FILE *fp;
   char mode[] = "r";
@@ -88,8 +87,7 @@ int Marsupial_open_image(Marsupial *self, char *filename) {
 
 /** Write the pgm image.
  *  @param self Marsupial object.
- *  @param filename Pgm filepath.
- */
+ *  @param filename Pgm filepath. */
 int Marsupial_save_image(Marsupial *self, char *filename) {
   FILE *fp;
   char mode[] = "w";
@@ -110,7 +108,7 @@ int Marsupial_save_image(Marsupial *self, char *filename) {
 int Marsupial_grey_image(Marsupial *self) {
   int r, c; /** row and column indices. */
   /* Cast the img data to a two dimensional array, for convenient looping. */
-  uint8_t(*img_data)[self->img_width] =
+  uint8_t (*img_data)[self->img_width] =
       (uint8_t(*)[self->img_width])self->img_data;
   for (r = 0; r < self->img_height; r++) {   /* Loop rows */
     for (c = 0; c < self->img_width; c++) {  /* Loop pixels in row */
@@ -119,10 +117,32 @@ int Marsupial_grey_image(Marsupial *self) {
   }
   return 0;
 }
+/** Convolution of the image with a given 3x3 kernel.
+ *  @param self Marsupial object.
+ *  @param kernel 3x3 convolution kernel. */
+int Marsupial_convolution3x3(Marsupial *self, double (*kernel)[3] ) {
+  //TODO: Implement the image convolution.
+  fprintf(stderr, "Warning: Image convolution not yet implemented.\n");
+  return 0;
+}
+
+/** Gaussian blur the image with a 3x3 kernel.
+ *  @param self Marsupial object. */
+int Marsupial_gaussian3x3(Marsupial *self) {
+  /* The Gaussian blur 3x3 kernel. */
+  double kernel[3][3] = {
+    {1/16.0, 1/8.0, 1/16.0},
+    {1/8.0,  1/4.0, 1/8.0},
+    {1/16.0, 1/8.0, 1/16.0},
+  };
+  Marsupial_convolution3x3(self, kernel);
+
+  return 0;
+}
 
 /** Destroy the object and free allocated memory.
- *  NB: We have forgotten one thing here.
- */
+ *  @param self Double-pointer to the Marsupial object.
+ *  NB: We have forgotten one thing here. */
 int Marsupial_destroy(Marsupial **self) {
   if (self != NULL && *self != NULL) {
     free(*self);
