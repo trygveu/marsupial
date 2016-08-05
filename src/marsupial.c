@@ -39,7 +39,7 @@ void check_error(bool error_condition, char *format, ...) {
 }
 
 /** Object constructor */
-Marsupial *Marsupial_new() {
+Marsupial *marsupial_new() {
   Marsupial *self = calloc(1, sizeof(Marsupial));
   return self;
 }
@@ -48,7 +48,7 @@ Marsupial *Marsupial_new() {
  *  We support standard pgm format without comments.
  *  @param self Marsupial object.
  *  @param filename Pgm filepath, read only. */
-int Marsupial_open_image(Marsupial *self, char *filename) {
+int marsupial_open_image(Marsupial *self, char *filename) {
   FILE *fp;
   char mode[] = "r";
   fp = fopen(filename, mode);
@@ -88,7 +88,7 @@ int Marsupial_open_image(Marsupial *self, char *filename) {
 /** Write the pgm image.
  *  @param self Marsupial object.
  *  @param filename Pgm filepath. */
-int Marsupial_save_image(Marsupial *self, char *filename) {
+int marsupial_save_image(Marsupial *self, char *filename) {
   FILE *fp;
   char mode[] = "w";
   fp = fopen(filename, mode);
@@ -105,7 +105,7 @@ int Marsupial_save_image(Marsupial *self, char *filename) {
 }
 
 /** Divide all pixels by 2 */
-int Marsupial_grey_image(Marsupial *self) {
+int marsupial_grey_image(Marsupial *self) {
   int r, c; /** row and column indices. */
   /* Cast the img data to a two dimensional array, for convenient looping. */
   uint8_t (*img_data)[self->img_width] =
@@ -120,7 +120,7 @@ int Marsupial_grey_image(Marsupial *self) {
 /** Convolution of the image with a given 3x3 kernel.
  *  @param self Marsupial object.
  *  @param kernel 3x3 convolution kernel. */
-int Marsupial_convolution3x3(Marsupial *self, double (*kernel)[3] ) {
+int marsupial_convolution3x3(Marsupial *self, double (*kernel)[3] ) {
   //TODO: Implement the image convolution.
   fprintf(stderr, "Warning: Image convolution not yet implemented.\n");
   return 0;
@@ -128,22 +128,20 @@ int Marsupial_convolution3x3(Marsupial *self, double (*kernel)[3] ) {
 
 /** Gaussian blur the image with a 3x3 kernel.
  *  @param self Marsupial object. */
-int Marsupial_gaussian3x3(Marsupial *self) {
+int marsupial_gaussian3x3(Marsupial *self) {
   /* The Gaussian blur 3x3 kernel. */
-  double kernel[3][3] = {
+  double gaussian_kernel[3][3] = {
     {1/16.0, 1/8.0, 1/16.0},
     {1/8.0,  1/4.0, 1/8.0},
     {1/16.0, 1/8.0, 1/16.0},
   };
-  Marsupial_convolution3x3(self, kernel);
-
-  return 0;
+  return marsupial_convolution3x3(self, gaussian_kernel);
 }
 
 /** Destroy the object and free allocated memory.
  *  @param self Double-pointer to the Marsupial object.
  *  NB: We have forgotten one thing here. */
-int Marsupial_destroy(Marsupial **self) {
+int marsupial_destroy(Marsupial **self) {
   if (self != NULL && *self != NULL) {
     free(*self);
     *self = NULL;

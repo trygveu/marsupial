@@ -13,31 +13,31 @@
 typedef struct _marsupial_t Marsupial;
 
 /** Object constructor */
-Marsupial* Marsupial_new();
+Marsupial* marsupial_new();
 
 /** Open a pgm image.
  *  We support standard pgm format without comments.
  *  @param self Marsupial object.
  *  @param filename Pgm filepath, read only. */
-int Marsupial_open_image(Marsupial *self, char* filename);
+int marsupial_open_image(Marsupial *self, char* filename);
 
 /** Write the pgm image.
  *  @param self Marsupial object.
  *  @param filename Pgm filepath. */
-int Marsupial_save_image(Marsupial *self, char* filename);
+int marsupial_save_image(Marsupial *self, char* filename);
 
 /** Divide all pixels by 2.
  *  @param self Marsupial object. */
-int Marsupial_grey_image(Marsupial *self);
+int marsupial_grey_image(Marsupial *self);
 
 /** Gaussian blur the image with a 3x3 kernel.
  *  @param self Marsupial object. */
-int Marsupial_gaussian3x3(Marsupial *self);
+int marsupial_gaussian3x3(Marsupial *self);
 
 /** Destroy the object and free allocated memory.
  *  @param self Double-pointer to the Marsupial object.
  *  NB: We have forgotten one thing here. */
-int Marsupial_destroy(Marsupial** self);
+int marsupial_destroy(Marsupial** self);
 
 
 #endif  // INCLUDE_MARSUPIAL_MARSUPIAL_H_

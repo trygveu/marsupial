@@ -5,11 +5,11 @@
 void print_info();
 
 int main(int argc, char ** argv) {
-  Marsupial* kang = Marsupial_new();
-  Marsupial_open_image(kang, "./res/logo.pgm");
-  Marsupial_grey_image(kang);
-  Marsupial_save_image(kang, "output.pgm");
-  Marsupial_destroy(&kang);
+  Marsupial* kang = marsupial_new();
+  marsupial_open_image(kang, "./res/logo.pgm");
+  marsupial_grey_image(kang);
+  marsupial_save_image(kang, "output.pgm");
+  marsupial_destroy(&kang);
   return 0;
 }
 
