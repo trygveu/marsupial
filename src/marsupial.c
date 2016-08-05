@@ -6,6 +6,7 @@
 
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -14,10 +15,13 @@
 
 #define PGM_HEADER_LINES 3
 
+/** Marsupial object.
+ *  The opaque object struct, with image data.
+ */
 struct _marsupial_t {
   int img_width, img_height, img_maxval;
   size_t img_size;
-  char *img_data;
+  uint8_t *img_data;
 };
 
 /** Utility function to check error, print message and exit.
@@ -34,11 +38,17 @@ void check_error(bool error_condition, char *format, ...) {
   }
 }
 
+/** Object constructor */
 Marsupial *Marsupial_new() {
   Marsupial *self = calloc(1, sizeof(Marsupial));
   return self;
 }
 
+/** Open a pgm image.
+ *  We support standard pgm format without comments.
+ *  @param self Marsupial object.
+ *  @param filename Pgm filepath, read only.
+ */
 int Marsupial_open_image(Marsupial *self, char *filename) {
   FILE *fp;
   char mode[] = "r";
@@ -50,7 +60,7 @@ int Marsupial_open_image(Marsupial *self, char *filename) {
   ssize_t read;
   int i;
   /* Read the first 3 lines of the image */
-  //TODO: Support comment lines starting with #.
+  // TODO: Support comment lines starting with #.
   for (i = 0; i < PGM_HEADER_LINES; i++) {
     read = getline(&header[i], &len, fp);
     check_error(read == -1, "Failed to read image header.\n");
@@ -70,18 +80,16 @@ int Marsupial_open_image(Marsupial *self, char *filename) {
   self->img_size = self->img_width * self->img_height;
   self->img_data = malloc(self->img_size);
   /* Read image data. */
-  len = fread(self->img_data, sizeof(char), self->img_size, fp);
-  check_error(len != self->img_size,
-              "Expected %d bytes, read %d bytes.",
+  len = fread(self->img_data, sizeof(uint8_t), self->img_size, fp);
+  check_error(len != self->img_size, "Expected %d bytes, read %d bytes.",
               self->img_size, len);
   return 0;
 }
 
-int Marsupial_grey_image(Marsupial *self) {
-  // TODO: Loop all the pixels, and divide the value by 2.0.
-  return 0;
-}
-
+/** Write the pgm image.
+ *  @param self Marsupial object.
+ *  @param filename Pgm filepath.
+ */
 int Marsupial_save_image(Marsupial *self, char *filename) {
   FILE *fp;
   char mode[] = "w";
@@ -91,13 +99,30 @@ int Marsupial_save_image(Marsupial *self, char *filename) {
   /* Write header */
   fprintf(fp, "P5\n%d %d\n%d\n", self->img_width, self->img_height, 255);
   /* Write data */
-  len = fwrite(self->img_data, sizeof(char), self->img_size, fp);
-  check_error(len != self->img_size, 
-              "Write image, expected %d bytes, wrote %d bytes.",
-              self->img_size, len);
+  len = fwrite(self->img_data, sizeof(uint8_t), self->img_size, fp);
+  check_error(len != self->img_size,
+              "Write image, expected %d bytes, wrote %d bytes.", self->img_size,
+              len);
   return 0;
 }
 
+/** Divide all pixels by 2 */
+int Marsupial_grey_image(Marsupial *self) {
+  int r, c; /** row and column indices. */
+  /* Cast the img data to a two dimensional array, for convenient looping. */
+  uint8_t(*img_data)[self->img_width] =
+      (uint8_t(*)[self->img_width])self->img_data;
+  for (r = 0; r < self->img_height; r++) {   /* Loop rows */
+    for (c = 0; c < self->img_width; c++) {  /* Loop pixels in row */
+      img_data[r][c] = img_data[r][c] / 2;
+    }
+  }
+  return 0;
+}
+
+/** Destroy the object and free allocated memory.
+ *  NB: We have forgotten one thing here.
+ */
 int Marsupial_destroy(Marsupial **self) {
   if (self != NULL && *self != NULL) {
     free(*self);
