@@ -1,4 +1,4 @@
-CFLAGS = -Wall -I ./include
+CFLAGS = -Wall -I ./include -g3
 
 all: bin/marsupial
 
@@ -9,4 +9,4 @@ bin:
 	mkdir -p bin
 
 clean:
-	rm build/marsupial
+	rm -f bin/marsupial
