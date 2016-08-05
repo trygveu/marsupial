@@ -5,9 +5,8 @@
 void print_info();
 
 int main(int argc, char ** argv) {
-  print_info();
-
   Marsupial* kang = Marsupial_new();
+  Marsupial_open_image(kang, "./res/logo.pgm");
   Marsupial_destroy(&kang);
   return 0;
 }
