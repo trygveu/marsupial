@@ -82,7 +82,7 @@ int marsupial_open_image(Marsupial *self, char *filename) {
   len = fread(self->img_data, sizeof(uint8_t), self->img_size, fp);
   check_error(len != self->img_size, "Expected %d bytes, read %d bytes.",
               self->img_size, len);
-  fprintf(stderr, "Successfully loaded image: %d by %d with %d bytes.\n",
+  fprintf(stderr, "Successfully loaded image: %d by %d with %zd bytes.\n",
           self->img_width, self->img_height, self->img_size);
   return 0;
 }
@@ -103,7 +103,7 @@ int marsupial_save_image(Marsupial *self, char *filename) {
   check_error(len != self->img_size,
               "Write image, expected %d bytes, wrote %d bytes.", self->img_size,
               len);
-  fprintf(stderr, "Successfully saved image: %d by %d with %d bytes.\n",
+  fprintf(stderr, "Successfully saved image: %d by %d with %zd bytes.\n",
           self->img_width, self->img_height, self->img_size);
   return 0;
 }
